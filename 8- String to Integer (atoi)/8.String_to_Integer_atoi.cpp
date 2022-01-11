@@ -26,44 +26,62 @@ public:
     short pos = 0;
     long num = 0;
     long coef = 1;
+    bool f = true;
 
     int myAtoi(string s) {
 
-        while(s[0] == ' ' || s[0] == '\t' || s[0] == '\n' || s[0] == '-' || s[0] == '+')
+        while(s[0] == ' ') s.erase(0, 1);
+        while(s[0] == '0')
         {
-            if(s[0] == '-') neg = 1;
-            if(s[0] == '+') pos = 1;
+            s.erase(0, 1);
+            f = false;
+        }
+        while((s[0] == '-' || s[0] == '+') && f)
+        {
+            if(s[0] == '-') neg += 1;
+            if(s[0] == '+') pos += 1;
             s.erase(0, 1);
         }
+        while(s[0] == '0') s.erase(0, 1);
+        if(neg > 1 || pos > 1) return 0;
 
         cout << "Your string: " << s << endl;
-
         while(s[0] >= '0' && s[0] <= '9')
         {
             S.push(s[0]);  // collect digits in reverse order
             s.erase(0, 1);
         }
-
+        if(S.size() > 10) 
+        {
+            if(neg && !pos) num *= -1;
+            if (!neg) return INT_MAX;
+            if (neg && !pos) return INT_MIN;
+            //if(neg && pos) num = 0;
+            return num;
+        } 
         while(!S.empty())
         {
-            num += (S.top() - '0')*coef;
+            num += (long)(S.top() - '0')*coef;
+            if (num >= INT_MAX) break;
+            if (num <= INT_MIN) break;
+            if (coef >= INT_MAX) break;
             S.pop();
-            if(S.size() == 1) coef *= 10;
+            coef *= 10;
         }
         
-        if(neg) num *= -1;
-        if(neg && pos) num = 0;
-        cout << "Your number: " << num;
-
+        if(neg && !pos) num *= -1;
         if (num >= INT_MAX) num = INT_MAX;
         if (num <= INT_MIN) num = INT_MIN;
-        return num;
+        if(neg && pos) num = 0;
         
+        cout << "Your number: " << num;
+
+
+        return num;
     }
 };
-
 int main()
 {
     Solution S;
-    S.myAtoi("    -2313dfsdfsdf");
+    S.myAtoi("20000000000000000000");
 }
