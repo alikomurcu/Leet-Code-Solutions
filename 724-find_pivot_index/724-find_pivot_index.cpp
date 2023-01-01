@@ -8,40 +8,19 @@ class Solution {
 public:
     int pivotIndex(vector<int> nums) {
         int size = nums.size();
-        int mid = size / 2;
-
-        while(true)
+        for (int i = 0; i < size; i++)
         {
-            if (mid >= size)    return -1;
-            int leftsum = 0;
-            int rightsum = 0;
-
-            for(int i=0; i<mid; i++)
+            int left = 0, right = 0;
+            for (int j = 0; j < i; j++)
             {
-                leftsum += nums[i];
+                left += nums[j];
             }
-
-            for(int i=mid+1; i<size; i++)
+            for (int k = i + 1; k < size; k++)
             {
-                rightsum += nums[i];
+                right += nums[k];
             }
-
-            if (mid == 0 && rightsum != 0) return -1;
-            if (mid == size - 1 && leftsum != 0) return -1;
-
-            if (leftsum == rightsum)    return mid;
-            else if (leftsum > rightsum)
-            {
-                mid = mid / 2;  // assign new mid to left
-            }
-
-            else if (leftsum < rightsum)
-            {
-                mid = mid + ((size) - mid) / 2;    // assing new mid to right
-            }
-
+            if (left == right) return i;
         }
-
     }
 };
 
