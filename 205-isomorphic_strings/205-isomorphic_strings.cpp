@@ -2,6 +2,7 @@
 #include<iostream>
 #include <algorithm>
 #include <unordered_map>
+#include <vector>
 
 using namespace std;
 
@@ -10,38 +11,18 @@ class Solution {
 public:
     bool isIsomorphic(string s, string t) {
         // create a map from s to t
-        unordered_map<char, char> map;
-
-        int szS = s.size();
-        int szT = t.size();
-        string t2 = s;
-        if (szS != szT) return false;
-        for(int i = 0; i < szS; i++)
+        unordered_map<char, int> map1, map2;
+        int szS = s.size(), szT = t.size();
+        if(szS != szT) return false;
+        for(int i=0; i<szS; i++)
         {
-            const char c = s[i];
-            const char d = t[i];
-//            if (map.find(d) != map.end())
-//            {
-//                if (map[d] != t2[i]) return false;
-//            }
-//            else
-//            {
-//                map[d] = c;
-//            }
-            for (int j = 0; j < szS; j++)
-            {
-                if(s[j] == c)
-                    s[j] = i;
-            }
-            for (int j = 0; j < szS; j++)
-            {
-                if(t[j] == d)
-                    t[j] = i;
-            }
+            if(map1[s[i]] != map2[t[i]]) return false;
+            map1[s[i]] = i+1;
+            map2[t[i]] = i+1;
         }
-        if (s.compare(t) == 0) return true;
-        else return false;
+        return true;
     }
+
 };
 
 int main()
